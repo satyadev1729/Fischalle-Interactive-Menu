@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fischhalle - Interaktives Menü</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: beige;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+          position: relative;
+        }
+        .container::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: url('https://imgur.com/pxSRKi5.jpg') no-repeat center center;
+          background-size: contain;
+          opacity: 0.19;  /* Change this value to adjust opacity */
+          z-index: -1;
+        }
+        .menu-item {
+            cursor: pointer;
+            color: black;
+            text-decoration: underline;
+            margin: 10px 0;
+        }
+        .ingredient-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: beige;
+            padding: 20px;
+            border: 1px solid black;
+            box-shadow: 0px 0px 10px gray;
+        }
+        .close-btn {
+            cursor: pointer;
+            color: red;
+        }
+        img.logo {
+            max-width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fischhalle Interaktives Menü</h1>
+        
+        <h2>Vorspeisen</h2>
+        <p class="menu-item" onclick="showIngredients('lachs')">Lachs kalt-Rauch an Reibekuchen und Apfel-Zwiebel Chutney - 13,50€</p>
+        <p class="menu-item" onclick="showIngredients('garnelen')">2 Garnelenspieße gebraten an Röststulle und Dipp Soßen - 12,50€</p>
+        
+        <h2>Suppen</h2>
+        <p class="menu-item" onclick="showIngredients('fischsoljanka')">Fischsoljanka „a la Chef“ mit Röststulle - 7,90€</p>
+        
+        <h2>Vegetarisch</h2>
+        <p class="menu-item" onclick="showIngredients('linsen')">Rote Linsen-Süßkartoffel-Wakame Boulette an Pfannengemüse und Kartoffelchips - 14,90€</p>
+        
+        <h2>Hauptspeisen</h2>
+        <p class="menu-item" onclick="showIngredients('backfisch')">Hausgemachter Backfisch mit Tüffelchips und Pfannengemüse - 14,90€</p>
+        <p class="menu-item" onclick="showIngredients('heringsfilet')">Heringsfilet (Matjes n.A.) mit Rum Pflaumenmus an Brattüffel und Bohnensalat - 15,50€</p>
+        <p class="menu-item" onclick="showIngredients('bratheringsfilet')">Bratheringsfilet (süß + sauer) an Brattüffel und Speckbohnen - 15,50€</p>
+        <p class="menu-item" onclick="showIngredients('seelachs')">XXL Seelachsfilet gebraten an Speckbohnen und Tüffelstampf - 16,90€</p>
+        <p class="menu-item" onclick="showIngredients('scholle')">Scholle oder Flunder gebraten an Speckbohnen und warmen Tüffelsalat - 16,90€</p>
+        <p class="menu-item" onclick="showIngredients('dorschfilet')">Dorschfilet gebraten an Honig-Senf-Soße mit Tüffelstampf und Bohnensalat - 19,50€</p>
+        <p class="menu-item" onclick="showIngredients('kapitänsteller')">Kapitänsteller 3* Fischfilet der Saison gebraten an Pfannengemüse und Fischtüffelstampf - 22,90€</p>
+        
+        <h2>Für unsere Zwerge</h2>
+        <p class="menu-item" onclick="showIngredients('fischstäbchen')">Selbst-gebastelte Fischstäbchen mit Kartoffelstampf und Dip - 7,90€</p>
+        <p class="menu-item" onclick="showIngredients('reibeküchlein')">Reibeküchlein mit Apfelkompott oder Zimt und Zucker - 4,90€</p>
+    </div>
+    
+    <div id="ingredient-popup" class="ingredient-popup">
+        <span class="close-btn" onclick="closePopup()">X</span>
+        <h2 id="item-name"></h2>
+        <img id="ingredient-img" src="" alt="Ingredient Image" style="width:100%;max-width:400px;">
+    </div>
+    
+    <script>
+        function showIngredients(item) {
+            let images = {
+                'lachs': 'https://eat.de/wp-content/uploads/2023/05/kartoffelpuffer-mit-lachs-0527.jpg',
+                'garnelen': 'https://cdn.gutekueche.de/media/recipe/49307/conv/garnelen-mit-drei-dips-default.jpg',
+                'fischsoljanka': 'https://de.rc-cdn.community.thermomix.com/recipeimage/63tqxmvq-20fed-806174-4a364-n01ycy40/f6c8dc8c-85a1-4c21-9ef3-2abea4236122/original/fisch-soljanka-nach-art-des-fischkochs-ddr.jpeg',
+                'linsen': 'https://www.hit.de/rezept/hauptspeisen/linsen-suesskartoffel-pfanne/9448/image-thumb__9448__thumb-half-content/3020_linsen-suesskartoffel-pfanne-mit-minz-joghurt.c91ce1bc.jpg',
+                'backfisch': 'https://cdn.foodblaster.com/wp-content/uploads/2020/04/bratfisch-anrichten3.jpg',
+                'heringsfilet': 'https://www.sonachgefuehl.de/wp-content/uploads/2017/09/Matjessalat_02.jpg',
+                'bratheringsfilet': 'https://lachs-direkt.de/media/image/product/459/md/brathering-filet-suess-sauer~2.jpg',
+                'seelachs': 'https://img.chefkoch-cdn.de/rezepte/4065561633122779/bilder/1421181/crop-960x720/seelachs-auf-bunten-tagliatelle-und-speck.jpg',
+                'scholle': 'https://img1.kochrezepte.at/use/10/scholle-gebraten_10755.jpg',
+                'dorschfilet': 'https://img1.kochrezepte.at/use/8/gebratener-lachs-in-honig-senf-sauce_8113.jpg',
+                'kapitänsteller': 'https://img.chefkoch-cdn.de/rezepte/2536911397404607/bilder/981686/crop-960x720/fischfilet-gebraten.jpg',
+                'fischstäbchen': 'https://assets.ichkoche.at/image/11/107900.jpg?v=0&twic=v1/focus=50px50p/cover=1200x630',
+                'reibeküchlein': 'https://ais.kochbar.de/vms/5b59a88ba2ea5068ec4547d2/1200x1200/hausgemachte-kartoffelpuffer-mit-apfelmus.jpg'
+            };
+            
+            document.getElementById('item-name').innerText = item;
+            document.getElementById('ingredient-img').src = images[item];
+            document.getElementById('ingredient-popup').style.display = 'block';
+        }
+        
+        function closePopup() {
+            document.getElementById('ingredient-popup').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
